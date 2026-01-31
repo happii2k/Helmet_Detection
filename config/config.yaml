@@ -5,4 +5,11 @@ data_ingestion:
   raw_data_dir: "data/raw_data"
   extract_dir: "data/raw_data"
 
+data_validation:
+  annotations_dir: "data/raw_data/annotations"
+  images_dir: "data/raw_data/images"
+  required_classes: 
+    - "With Helmet"
+    - "Without Helmet"
+
 
