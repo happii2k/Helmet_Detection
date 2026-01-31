@@ -1,47 +1,65 @@
 import os
-from src.utils.exception import CustomException
-from src.cloud_blob.azure_blob import AzureBlob
 import sys
-from src.utils.logger import logging
 from zipfile import ZipFile
+
+from src.utils.exception import CustomException
+from src.cloud.azure_blob import AzureBlob
+from src.utils.logger import logging
+from src.utils.util import read_yaml
+CONFIG_FILE_PATH = os.path.join("config", "config.yaml")
+
+config = read_yaml(CONFIG_FILE_PATH)
+from dotenv import load_dotenv
+load_dotenv()
 
 
 class DataIngestion:
 
-    def __init__(self , config):
+    def __init__(self):
         self.container_name = config['data_ingestion']['container_name']
         self.blob_name = config['data_ingestion']['blob_name']
-        self.raw_data_dir = config['data_ingestion']['raw_data_dir']
-        self.extract_dir = "data/raw_data"
-        self.connection_string = os.getenv("CONNECTION_STRING") 
-    
-    def download_data_zip(self , azure_blob):
+        self.raw_data_dir = config['data_ingestion']['raw_data_dir']   # zip file path
+        self.extract_dir = config['data_ingestion']['extract_dir']     # folder path
+        self.connection_string = os.getenv("CONNECTION_STRING")
+
+    def download_data_zip(self):
         try:
-            logging.info("Starting data download from Azure Blob Storage.")
+            logging.info("Starting data download from Azure Blob Storage")
+
             azure_blob = AzureBlob(self.connection_string)
-            azure_blob.download_from_azure(local_dir=self.extract_dir , container_name=self.container_name)
-            logging.info("Data downloaded successfully from Azure Blob Storage.")
+
+            azure_blob.download_from_azure(
+                local_dir=self.raw_data_dir,
+                container_name=self.container_name
+                
+            )
+
+            logging.info("Download completed successfully")
+
         except Exception as e:
             raise CustomException(e, sys)
-    
+
     def extract_data_zip(self):
         try:
-           
-            logging.info("Starting data extraction.")
-            with ZipFile(self.raw_data_dir, 'r') as zip_ref:
+            logging.info("Starting zip extraction")
+
+            os.makedirs(self.extract_dir, exist_ok=True)
+
+            with ZipFile(os.path.join(self.raw_data_dir, self.blob_name), 'r') as zip_ref:
                 zip_ref.extractall(self.extract_dir)
-            logging.info("Data extracted successfully.")
+
+            logging.info("Extraction completed successfully")
+
         except Exception as e:
-            logging.info("Data extracted Failed !!")
             raise CustomException(e, sys)
-    
+
     def run(self):
-        
-        self.download_zip()
-        self.extract_zip()
+        self.download_data_zip()
+        self.extract_data_zip()
 
 
+if __name__ == "__main__":
 
-    
 
-        
+    ingestion = DataIngestion()
+    ingestion.run()

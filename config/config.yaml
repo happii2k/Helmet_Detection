@@ -2,4 +2,7 @@ data_ingestion:
   source: "azure_blob" 
   container_name: "data" 
   blob_name: "archive.zip" 
-  raw_data_dir: "data/archive.zip"
+  raw_data_dir: "data/raw_data"
+  extract_dir: "data/raw_data"
+
+
