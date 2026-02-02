@@ -12,4 +12,33 @@ data_validation:
     - "With Helmet"
     - "Without Helmet"
 
+data_transformation:
+  image_size: 512
+
+  normalize:
+    mean: [0.485, 0.456, 0.406]
+    std:  [0.229, 0.224, 0.225]
+
+  augmentation:
+    horizontal_flip: true
+    flip_prob: 0.5
+
+    brightness_contrast: true
+    brightness_prob: 0.3
+
+    blur: false
+    blur_prob: 0.1
+
+  bbox_format: "pascal_voc"
+
+dataset:
+  images_dir: "data/raw/images"
+  annotations_dir: "data/raw/annotations"
+
+  classes:
+    With Helmet: 1
+    Without Helmet: 2
+
+
+
 
