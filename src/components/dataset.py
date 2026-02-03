@@ -7,7 +7,7 @@ CONFIG_FILE_PATH  = os.path.join("config" , "config.yaml")
 config = read_yaml(CONFIG_FILE_PATH)
 class HelmetDataset(torch.utils.data.Dataset):
 
-    def __init__(self , images_dir , annotation_dir , transform = None , class_map = None):
+    def __init__(self ,  transform = None ):
         self.images_dir = config["dataset"]["images_dir"]
         self.annotations_dir = config["dataset"]["annotations_dir"]
         self.class_map = config["dataset"]["classes"]
