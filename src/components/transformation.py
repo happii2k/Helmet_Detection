@@ -10,8 +10,8 @@ class DataTransformation:
     def __init__(self , train = True ):
         trans_cfg = config['data_transformation']
         size = trans_cfg['image_size']
-        mean = trans_cfg['mean']
-        std = trans_cfg['std']
+        mean = trans_cfg['normalize']['mean']
+        std = trans_cfg['normalize']['std']
 
         aug = trans_cfg['augmentation']
 
