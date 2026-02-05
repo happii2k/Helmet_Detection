@@ -3,7 +3,7 @@ import torch
 from torchvision.models.detection import fasterrcnn_resnet50_fpn
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 
-from src.data.data_loader import get_data_loader
+from src.data_loader.dataloader import get_dataloader
 from src.utils.util import read_yaml
 from src.utils.logger import get_logger
 
@@ -49,10 +49,9 @@ class ModelTrainer:
 
         model = self.build_model().to(device)
 
-        train_loader = get_data_loader(
+        train_loader = get_dataloader(
             batch_size=self.batch_size,
-            train=True,
-            shuffle=True
+            train=True
         )
 
         optimizer = torch.optim.SGD(

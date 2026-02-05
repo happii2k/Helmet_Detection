@@ -6,8 +6,8 @@ data_ingestion:
   extract_dir: "data/raw_data"
 
 data_validation:
-  annotations_dir: "data/raw_data/annotations"
-  images_dir: "data/raw_data/images"
+  annotations_dir: "data/raw/annotations"
+  images_dir: "data/raw/images"
   required_classes: 
     - "With Helmet"
     - "Without Helmet"

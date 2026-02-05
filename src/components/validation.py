@@ -2,7 +2,7 @@ import os
 import xml.etree.ElementTree as ET
 from PIL import Image
 import sys
-
+from pathlib import Path
 from src.utils.exception import CustomException
 from src.utils.logger import get_logger
 from src.utils.util import read_yaml
@@ -22,6 +22,15 @@ class DataValidation:
     def validate(self):
         try:
             logger.info("Starting data validation process")
+
+            # Ensure annotation and image directories exist
+            if not os.path.exists(self.annotation_dir):
+                logger.error(f"Annotations directory not found: {self.annotation_dir}")
+                raise CustomException(f"Annotations directory not found: {self.annotation_dir}. Please run ingestion or fix `config/config.yaml`", sys)
+
+            if not os.path.exists(self.images_dir):
+                logger.error(f"Images directory not found: {self.images_dir}")
+                raise CustomException(f"Images directory not found: {self.images_dir}. Please run ingestion or fix `config/config.yaml`", sys)
 
             annotation_files = [
                 f for f in os.listdir(self.annotation_dir) if f.endswith(".xml")
