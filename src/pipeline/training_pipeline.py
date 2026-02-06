@@ -9,5 +9,7 @@ def run_pipeline():
     data_validation.run_validation()
     model_trainer.train()
 
+run_pipeline()
+
 
     
