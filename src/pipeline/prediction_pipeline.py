@@ -25,7 +25,11 @@ class PredictionPipeline:
     
     def _build_model(self):
         num_classes = config['model_trainer']['model']['num_classes']
-        model = fasterrcnn_resnet50_fpn(weights = None)
+        model = fasterrcnn_resnet50_fpn(
+                    weights=None,
+                    weights_backbone=None
+                )
+
         in_features = model.roi_heads.box_predictor.cls_score.in_features
         model.roi_heads.box_predictor = FastRCNNPredictor(
             in_features , num_classes

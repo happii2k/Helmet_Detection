@@ -5,7 +5,17 @@ import io
 from src.pipeline.prediction_pipeline import PredictionPipeline
 pipeline = PredictionPipeline()
 
-app = FastAPI(title = 'Helmet Detection')
+from contextlib import asynccontextmanager
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global pipeline
+    pipeline = PredictionPipeline()  # Startup: load model
+    yield  # App runs here
+    pipeline = None  # Shutdown: cleanup (optional)
+
+app = FastAPI(title="Helmet Detection API", lifespan=lifespan)
+
 
 @app.post
 async def predict(file : UploadFile = File(...) ):
